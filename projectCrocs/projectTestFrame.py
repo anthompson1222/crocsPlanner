@@ -92,16 +92,18 @@ def createGraphs():
         def giveGraphColor(string):
             num = int(string)
             if num > 66:
-                return "green"
+                return "#90de47"
             elif num > 33:
-                return "yellow"
+                return "#faf393"
             else:
-                return "red"
+                return "#fa8787"
     
         x_initial = 35
         x_gap = 30
         x_width = 45
-
+        skillCanvas.create_text(55,18,text = "Computers")
+        skillCanvas.create_text(133,18,text = "Programming")
+        skillCanvas.create_text(208,18,text = "Scripting")
 
         for x in range(len(skillCap)):
             skillCanvas.create_rectangle(x_initial, 25,
@@ -174,7 +176,7 @@ submit = tk.Button(f21,text = "Load Project", command = loadButton)
 submit.grid(row = 2, column = 0, pady = 2, sticky = "NSEW")
 newPro = tk.Button(f21, text = "Create Project", command = newButton)
 newPro.grid(row = 1, column = 1, pady = 2, sticky = "NSEW")
-exportPro = tk.Button(f21, text = "Export Project")
+exportPro = tk.Button(f21, text = "Adjust Project")
 exportPro.grid(row = 2, column = 1, pady = 2, sticky = "NSEW")
 f21.rowconfigure(0, weight = 1)
 f21.rowconfigure(1, weight = 1)
@@ -183,13 +185,91 @@ f21.columnconfigure(0, weight = 1)
 f21.columnconfigure(1, weight = 1)
 
 ### Bottom Frame
-empList = tk.Button(f23, text = "Employees")
+
+#Functions That Buttons Use
+def listOEmp():
+    if variable.get() != "None":
+        popout = tk.Tk()
+        emps = employer[1][(projectsList.index(variable.get()))-1].employees
+        tk.Label(popout, text = "List of Employees").pack()
+        for x in emps:
+            tk.Label(popout, text = x.name).pack()
+
+def addEmp2():
+    if variable.get() != "None":
+        popout = tk.Tk()
+        currentProject = employer[1][(projectsList.index(variable.get()))-1]
+        employeeList = []
+        nameList = []
+        for x in employer[0]:
+            if x not in currentProject.employees:
+                employeeList.append(x)
+                nameList.append(x.name)
+
+        
+        empName = tk.StringVar(popout)
+        empName.set(nameList[0])
+        drop = tk.OptionMenu(popout, empName, *nameList).pack()
+        def submit():
+            employer[1][employer[1].index(currentProject)].employees.append(employeeList[nameList.index(empName.get())])
+            loadButton()
+            mdf.write_saveFile(employer[0],employer[1])
+            popout.destroy()
+
+        tk.Button(popout, text = "Submit", command = submit).pack()
+
+def removeEmp2():
+    if variable.get() != "None":
+        popout = tk.Tk()
+        currentProject = employer[1][(projectsList.index(variable.get()))-1]
+        employeeList = currentProject.employees
+        nameList = []
+        for x in employeeList:
+            nameList.append(x.name)
+
+        empName = tk.StringVar(popout)
+        empName.set(nameList[0])
+        drop = tk.OptionMenu(popout, empName, *nameList).grid(row = 0,column = 0,padx = 5, pady = 10)
+        def submit():
+            employer[1][(projectsList.index(variable.get()))-1].employees.pop(nameList.index(empName.get()))
+            loadButton()
+            mdf.write_saveFile(employer[0],employer[1])
+            popout.destroy()
+
+        tk.Button(popout,text = "Submit", command = submit).grid(row = 0,column = 1, padx = 5, pady = 10,)
+        popout.rowconfigure(0, weight = 1)
+        popout.columnconfigure(0, weight = 1)
+        
+def util():
+    if variable.get() != "None":
+        popout = tk.Tk()
+        currentProject = employer[1][(projectsList.index(variable.get()))-1]
+        can = tk.Canvas(popout,width = 300, height = 240)
+        xbar=tk.Scrollbar(popout,orient="horizontal",command=can.xview)
+        x_initial = 40
+        x_gap = 40
+        x_width = 40
+
+        for x in currentProject.employees:
+            x.calculateHours()
+            can.create_rectangle(x_initial, 220, x_initial + x_width, 20, fill = "white")
+            can.create_rectangle(x_initial, 220, x_initial + x_width, 220 - (220 * ((40 - x.hours)/40))+20, fill = "yellow")
+            can.create_rectangle(x_initial, 220, x_initial + x_width, 220 - (220 * (currentProject.hours/40))+20, fill = "blue")
+            x_initial = x_initial + x_gap + x_width
+
+
+        can.configure(xscrollcommand=xbar.set, scrollregion=(0,0,x_initial,f22.winfo_height()))
+        can.pack(expand = "true", fill = "both")
+        xbar.pack(expand = "true", fill = "x")
+        
+
+empList = tk.Button(f23, text = "Employees", command = listOEmp) #done/make better popout
 empList.grid(row = 0, column = 0, pady = 1, padx = 1, sticky = "NSEW")
-utilButton = tk.Button(f23, text = "Utilization")
+utilButton = tk.Button(f23, text = "Utilization", command=util)
 utilButton.grid(row = 1, column = 0, pady = 1, padx = 1, sticky = "NSEW")
-addEmp = tk.Button(f23, text = "Add Employee")
+addEmp = tk.Button(f23, text = "Add Employee", command=addEmp2) #done/make better popout
 addEmp.grid(row = 0, column = 1, pady = 1, padx = 1, sticky = "NSEW")
-removeEmp = tk.Button(f23, text = "Remove Employee")
+removeEmp = tk.Button(f23, text = "Remove Employee", command = removeEmp2) #done/make better popout
 removeEmp.grid(row=1,column=1, pady = 1, padx = 1,sticky="NSEW")
 addTask = tk.Button(f23,text = "Add Task")
 addTask.grid(row = 0, column = 2, pady = 1, padx = 1, sticky = "NSEW")

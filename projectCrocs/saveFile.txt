@@ -1,8 +1,6 @@
-Mark,IT,Computers,10
+Mark,IT,Computers,10,Programming,6,Scripting,7
 Alex,IT,Computers,10,Programming,10,Scripting,10
-Haley,Wife
-Shelly,IT
-sdf,sdf
-nknb,vn 
+Haley,Wife,Computers,6,Programming,8
+Shelly,IT,Computers,10,Scripting,3
 Josh,IT,Computers,8
-A,IT,Computers,5,Programming,10,Scripting,2
+Shana,Accounting

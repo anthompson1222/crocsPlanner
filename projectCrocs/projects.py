@@ -27,6 +27,10 @@ class project:
 
     def addTask(self, task):
         self.tasks.append(task)
+
+    def adjustProject(self, name, hours):
+        self.name = name
+        self.hours = hours
         
 def saveProjectsToFile(projects):
     projectsToBeSaved = []

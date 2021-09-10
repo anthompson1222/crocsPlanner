@@ -52,8 +52,7 @@ def makeRaci(employees):
     for i in range(len(test.raci)):
         for j in range(len(test.raci[0])):
                 e = tk.Label(f12, text = str(test.raci[i][j]),
-                    bg = giveColor(str(test.raci[i][j])), relief="sunken",
-                    font =("Courier", 10))
+                    bg = giveColor(str(test.raci[i][j])), relief="sunken")
                 e.grid(row=i, column=j, sticky = "NSEW")
                 f12.columnconfigure(j, weight = 1)
         f12.rowconfigure(i, weight = 1)
@@ -128,15 +127,16 @@ def removeEmploy(): #Just needs a name
 
 #All the Buttons on the left hand side
 addEmp = tk.Button(f11, text = "Add Employee", command = addEmploy,
-                   highlightbackground = "#dbdbd3", font = ("Courier", 7))
+                   highlightbackground = "#dbdbd3")
 loadSkills = tk.Button(f11, text = "Load Skills",command = loadSkillSheet,
-                       highlightbackground = "#dbdbd3", font = ("Courier", 7))
+                       highlightbackground = "#dbdbd3")
 removeEmp = tk.Button(f11, text = "Remove Employee", command = removeEmploy,
-                      highlightbackground = "#dbdbd3", font = ("Courier", 7))
-addEmp.grid(row = 0, column = 0, pady = 40,padx = 17, sticky = "EW")
-loadSkills.grid(row = 1, column = 0, pady = 40,padx =2, sticky = "EW")
-removeEmp.grid(row = 2, column = 0, pady = 40, padx = 2, sticky = "EW")
-for x in range(1,3):
+                      highlightbackground = "#dbdbd3")
+addEmp.grid(row = 0, column = 0, pady = 40, sticky = "EW")
+loadSkills.grid(row = 1, column = 0, pady = 40, sticky = "EW")
+removeEmp.grid(row = 2, column = 0, pady = 40, sticky = "EW")
+f11.columnconfigure(0, weight = 1)
+for x in range(0,2):
     f11.rowconfigure(x, weight = 1)
 
 #The bar at the bottom
