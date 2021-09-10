@@ -8,8 +8,9 @@ class project:
         self.name = name
         self.employees = employees
         self.tasks = []
-        for x in employees:
-            x.insertProject(self)
+        if len(employees) > 0:
+            for x in employees:
+                x.insertProject(self)
 
     def printEmployees(self):
         print(self.name + "\n" + "Employees:")

@@ -16,6 +16,35 @@ def read_file(filename):
 
     return employeeStats
 
+def read_file2(filename): #Made to read the xcel stuff
+    employeeStats = []
+    indEmployee = []
+    skillz = []
+    skips = 0
+    noNeedCats = ['ID', 'Start time', 'Completion time', 'Email', 'Name']
+    with open(filename,newline='') as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter = ',')
+        for index, row in enumerate(csv_reader):
+            if index == 0:
+                for x in row:
+                    if x in noNeedCats:
+                        skips += 1
+                    else:
+                        skillz.append(x)
+            else:
+                for x in range(skips, len(row)):
+                    indEmployee.append(row[x])
+
+                employeeStats.append(indEmployee)
+                indEmployee = []
+    if skillz == []:
+        skillz.append("Import Employees")
+    else:
+        skillz[0] = "Skills/Names"
+    return [employeeStats, skillz]
+                        
+
+
 def write_file(employees): #writes to csv file in folder named saveFile.txt
     filename = "saveFile.txt" #Needs to be run through saveMatrixToFile
 
